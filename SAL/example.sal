@@ -1,0 +1,31 @@
+; this code is based on this tutorial: http://www.cs.cmu.edu/~rbd/doc/nyquist/
+
+; now I don't know how to get an absolute path,
+; so it will work only if the repository is contained at the C:\
+
+; if a-snd is not loaded, load sound sample:
+;
+if not(boundp(quote(a-snd))) then
+  set a-snd = s-read("C:\\nyquist\\s.wav")
+
+; the SOUND operator shifts, stretches, clips and scales 
+; a sound according to the current environment
+;
+
+define function down()
+  return seq(force-srate(*default-sound-srate*, sound(a-snd) ~ 0.2),
+                       force-srate(*default-sound-srate*, sound(a-snd) ~ 0.3),
+                                   force-srate(*default-sound-srate*, sound(a-snd) ~ 0.3),
+                                                force-srate(*default-sound-srate*, sound(a-snd) ~ 0.6))
+
+
+
+define function up()
+  return seq(force-srate(*default-sound-srate*, sound(a-snd) ~ 0.5),
+                       force-srate(*default-sound-srate*, sound(a-snd) ~ 0.4),
+                                   force-srate(*default-sound-srate*, sound(a-snd) ~ 0.3),
+                                                force-srate(*default-sound-srate*, sound(a-snd) ~ 0.2))
+
+; write a sequence
+;
+play seq(down(), up(), down())
